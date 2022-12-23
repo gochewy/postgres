@@ -1,0 +1,5 @@
+repository: https://github.com/gochewy/postgres.git
+name: postgres
+type: service
+version: 0.1.1
+dependencies: []
