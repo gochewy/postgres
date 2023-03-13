@@ -13,13 +13,17 @@ export default function dev() {
     name: "postgres:15.2",
   });
 
+  const network = new docker.Network(componentId, {
+    name: projectConfig.id,
+  });
+
   const user = "user";
   const password = "password";
   const database = componentId;
 
   const container = new docker.Container(componentId, {
     name: componentId,
-    image: image.name.get() as string,
+    image: image.name,
     networksAdvanced: [
       {
         name: projectConfig.id,
