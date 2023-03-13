@@ -19,10 +19,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "0.3.9"
 
-"@gochewy/lib@^0.1.1-beta.24":
-  version "0.1.1-beta.24"
-  resolved "https://registry.yarnpkg.com/@gochewy/lib/-/lib-0.1.1-beta.24.tgz#fa35343bf3b92b6baa7dd6cca3c08c7597300f0a"
-  integrity sha512-3YO8MdPU8Z1Q54uKtDN9dVanFZ482ANc5rts3+0dCg+1NMPQX6qTf+iTVXmMN9l1mm0DQlEiF9KeMcbfJbBGlw==
+"@gochewy/lib@^0.1.1-beta.28":
+  version "0.1.1-beta.28"
+  resolved "https://registry.yarnpkg.com/@gochewy/lib/-/lib-0.1.1-beta.28.tgz#701e4e3df860e42c4ada618d772ff1a913a4241d"
+  integrity sha512-JH+Tj2LbRVENBg2yXeS7M7nLfmMqroQ8rGCsrzW9YB2eav0uacecOPr5N4XoKo6S4yD9TRGoPI/4NOgIWZU/oA==
   dependencies:
     "@types/fs-extra" "^9.0.13"
     "@types/js-yaml" "^4.0.5"
