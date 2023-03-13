@@ -1,21 +1,55 @@
-import * as docker from '@pulumi/docker';
-import * as chewy from '@gochewy/lib';
+import * as chewy from "@gochewy/lib";
+import * as docker from "@pulumi/docker";
 
-const projectConfig = chewy.project.getProjectConfig();
-const componentConfig = chewy.components.getInstalledComponentDefinition();
-const name = componentConfig.name;
+export default function dev() {
+  console.log("@@ dev stack");
+  const projectConfig = chewy.project.getProjectConfig();
+  const volumePath = chewy.files.getDevVolumeDir();
+  const componentId = chewy.components.getComponentId();
 
-const image = new docker.Image(name, {
-    imageName: 'postgres:latest',
-});
+  console.log("@@ volume path: ", volumePath);
 
-const container = new docker.Container(name, {
-    image: image.imageName.get() as string,
-    networksAdvanced: [{
+  const image = new docker.RemoteImage(componentId, {
+    name: "postgres:15.2",
+  });
+
+  const user = "user";
+  const password = "password";
+  const database = componentId;
+
+  const container = new docker.Container(componentId, {
+    name: componentId,
+    image: image.name.get() as string,
+    networksAdvanced: [
+      {
         name: projectConfig.id,
-    }],
-    restart: 'unless-stopped',
-    volumes: [{
-        hostPath: '/var/lib/postgresql/data',
-    }]
-});
+      },
+    ],
+    restart: "unless-stopped",
+    volumes: [
+      {
+        containerPath: "/var/lib/postgresql/data",
+        hostPath: volumePath,
+      },
+    ],
+    ports: [
+      {
+        internal: 5432,
+        external: 5432,
+      },
+    ],
+    envs: [
+      `POSTGRES_USER=${user}`,
+      `POSTGRES_PASSWORD=${password}`,
+      `POSTGRES_DB=${database}`,
+    ],
+  });
+
+  return {
+    container,
+    image,
+    user,
+    password,
+    database,
+  };
+}

@@ -1,13 +1,17 @@
 import * as pulumi from "@pulumi/pulumi";
+import dev from "./dev";
 
 const stackName = pulumi.getStack();
 
-let exported: any;
+console.log("@@ stack name: ", stackName);
+
+let devOutput: ReturnType<typeof dev> | undefined;
 
 if(stackName === "dev") {
-    exported = require("./dev");
+    console.log("@@ dev stack");
+    devOutput = dev();
 } else if(stackName === "prod") {
     // prod
 }
 
-export default exported;
+export default devOutput;
