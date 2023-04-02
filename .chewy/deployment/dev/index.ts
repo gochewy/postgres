@@ -1,13 +1,11 @@
 import * as chewy from "@gochewy/lib";
 import * as docker from "@pulumi/docker";
+import ComponentOutput from "../component-output";
 
 export default function dev() {
-  console.log("@@ dev stack");
   const projectConfig = chewy.project.getProjectConfig();
   const volumePath = chewy.files.getDevVolumeDir();
   const componentId = chewy.components.getComponentId();
-
-  console.log("@@ volume path: ", volumePath);
 
   const image = new docker.RemoteImage(componentId, {
     name: "postgres:15.2",
@@ -20,6 +18,7 @@ export default function dev() {
   const user = "user";
   const password = "password";
   const database = componentId;
+  const port = 5432;
 
   const container = new docker.Container(componentId, {
     name: componentId,
@@ -38,8 +37,8 @@ export default function dev() {
     ],
     ports: [
       {
-        internal: 5432,
-        external: 5432,
+        internal: port,
+        external: port,
       },
     ],
     envs: [
@@ -49,11 +48,15 @@ export default function dev() {
     ],
   });
 
-  return {
-    container,
-    image,
-    user,
-    password,
-    database,
-  };
+  const output: ComponentOutput = {
+    username: user,
+    password: password,
+    publicHost: null,
+    publicPort: port,
+    privateHost: container.name,
+    privatePort: port,
+    database: database,
+  }
+
+  return output;
 }
