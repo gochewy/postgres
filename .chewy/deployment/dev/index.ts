@@ -46,6 +46,8 @@ export default function dev() {
       `POSTGRES_PASSWORD=${password}`,
       `POSTGRES_DB=${database}`,
     ],
+  }, {
+    dependsOn: [network],
   });
 
   const output: ComponentOutput = {

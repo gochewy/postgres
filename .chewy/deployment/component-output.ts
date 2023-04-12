@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 export const schema = z.object({
     username: z.string(),
-    password: z.string(),
+    password: z.string(), // TODO: make sure we output this as a secret in pulumi
     privateHost: z.string(),
     privatePort: z.number(),
     publicHost: z.string().nullable(),
